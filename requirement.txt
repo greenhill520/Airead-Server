@@ -3,4 +3,3 @@ Flask-SQLAlchemy
 apscheduler
 feedparser
 bpython
-BeautifulSoup
