@@ -2,3 +2,5 @@
 venv/
 airead.sqlite
 airead.log
+*.swp
+*.swo
