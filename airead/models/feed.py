@@ -26,6 +26,9 @@ class FeedSite(db.Model):
     def __repr__(self):
         return "<FeedSite %s>" % self.title
 
+    def __unicode__(self):
+        return "<FeedSite %s>" % self.title
+
 
 class FeedArticle(db.Model):
 
@@ -46,3 +49,6 @@ class FeedArticle(db.Model):
 
     def __repr__(self):
         return "<FeedArticle %s>" % self.title.encode('utf8')
+
+    def __unicode__(self):
+        return "%s" % self.title

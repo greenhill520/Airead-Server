@@ -55,14 +55,19 @@ class UserSubscribe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id', ondelete='CASCADE'), nullable=False)
-    user = db.relationship("User", innerjoin=True, lazy="joined")
-    site = db.relationship("FeedSite", innerjoin=True, lazy="joined")
+    user = db.relationship("User", innerjoin=True, lazy="joined",
+            backref='usersubscribe')
+    site = db.relationship("FeedSite", innerjoin=True, lazy="joined", backref='usersubscribe')
 
     def __init__(self, *args, **kwargs):
         super(UserSubscribe, self).__init__(*args, **kwargs)
 
     def __repr__(self):
-        return "<User %s subscribed %d>" % (self.user, self.site)
+        return "<User %s subscribed %s>" % (self.user.username,
+                self.site.title)
+    
+    def __unicode__(self):
+        return "<%s>" % (self.site.title)
 
 class AdminUser(db.Model):
 

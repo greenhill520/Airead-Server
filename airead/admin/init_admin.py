@@ -1,6 +1,6 @@
+from airead.app import db
 from airead.models import User, UserSubscribe, AdminUser, \
         FeedArticle, FeedSite
-from airead.app import db
 from flask.ext import admin, wtf
 from flask.ext.admin.contrib import sqlamodel
 from flask import flash
@@ -15,14 +15,16 @@ class MyModelView(sqlamodel.ModelView):
 
 class UserModelView(MyModelView):
     column_searchable_list = ('username',  ) 
+    column_display_all_relations = True
 
 
 class FeedArticleModelView(MyModelView):
     column_exclude_list = ('content', )
     column_searchable_list = ('title',  )
+    column_filters = ('updated', 'title', 'site')
 
 class UserSubscribeModelView(MyModelView):
-    pass
+    column_filters = ('user', 'site')
 
 class FeedSiteModelView(MyModelView):
     column_searchable_list = ('url',  'title', )
@@ -30,7 +32,7 @@ class FeedSiteModelView(MyModelView):
     can_edit = True
     can_delete = True
     form_excluded_columns = ('title', 'updated', 'articles')
-    
+
     def create_model(self, form):
         #super(FeedSiteModelView, self).create_model(form)
         url = form.data['url']
