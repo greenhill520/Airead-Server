@@ -1,5 +1,6 @@
 from airead.database import db
 from werkzeug import generate_password_hash, check_password_hash
+import md5
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -8,12 +9,11 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(20), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
 
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
-        self.password = generate_password_hash(password)
+        self.password = self._gen_password(password) 
 
     def __repr__(self):
         return "<User %s>" % self.username
@@ -21,11 +21,24 @@ class User(db.Model):
     def check_password(self, password):
         if self.password is None:
             return False
-        return check_password_hash(self.password, password)
+        mdpwd = md5.md5(password).hexdigest()
+        if mdpwd == self.password:
+            return True
+        else:
+            return False
+
+    def check_hash_password(self, hash_password):
+        if self.password == hash_password:
+            return True
+        return False
 
     def change_password(self, new_password):
-        self.password = generate_password_hash(new_password)
+        self.password = self._gen_password(new_password) 
         db.session.commit()
+
+    def _gen_password(self, raw_pwd):
+        pwd = md5.md5(raw_pwd)
+        return pwd.hexdigest()
 
     def subscribe(self, site):
         subscribed = UserSubscribe.query.filter_by(user=self, site=site).all()
@@ -40,9 +53,33 @@ class UserSubscribe(db.Model):
     __tablename__ = 'usersubscribe'
 
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    site = db.Column(db.Integer, db.ForeignKey('feedsite.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id', ondelete='CASCADE'), nullable=False)
+    user = db.relationship("User", innerjoin=True, lazy="joined")
+    site = db.relationship("FeedSite", innerjoin=True, lazy="joined")
 
-    def __init__(self, user, site):
-        self.user = user
-        self.site = site
+    def __init__(self, *args, **kwargs):
+        super(UserSubscribe, self).__init__(*args, **kwargs)
+
+    #def __repr__(self):
+    #    return "<User %s subscribed %s>" % (self.user, self.site)
+
+class AdminUser(db.Model):
+
+    __tablename__ = 'adminuser'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(20), nullable=False) 
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = generate_password_hash(password)
+
+    def __repr__(self):
+        return "<Admin %s>" % self.username
+
+    def check_password(self, password):
+        if self.password is None:
+            return False
+        return check_password_hash(self.password, password)

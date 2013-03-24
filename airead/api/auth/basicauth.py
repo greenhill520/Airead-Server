@@ -3,17 +3,21 @@ from flask import request, Response, g
 
 from airead.models import User
 
-def check_auth(username, password):
+def check_auth(username, hash_password):
+    """
+    the password is hash password
+    """
     users_list = User.query.filter_by(username=username)
     if len(users_list) == 0:
         return False
     user = users_list.first()
     if user is None:
         return False
-    success = user.check_password(password)
+    success = user.check_hash_password(hash_password)
     if not success:
         return False
     else:
+        g.user = user
         return True
 
 def challenge():

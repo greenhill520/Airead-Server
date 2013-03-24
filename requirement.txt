@@ -1,6 +1,8 @@
 Flask
 Flask-SQLAlchemy
 Flask-Script
+Flask-Admin
 apscheduler
 feedparser
 bpython
+simplejson
