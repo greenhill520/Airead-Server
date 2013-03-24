@@ -24,7 +24,7 @@ class FeedSite(db.Model):
         self.updated = feed_data.site_updated
 
     def __repr__(self):
-        return "<FeedSite %s>" % self.title.encode('utf8')
+        return "<FeedSite %s>" % self.title
 
 
 class FeedArticle(db.Model):
