@@ -5,7 +5,8 @@
     margin-top: 10px;
   }
   #logout-button {
-    margin-top: 20px;
+    margin-bottom: auto;
+    text-align: right;
   }
   .data {
     margin-left: 50px;
@@ -18,7 +19,7 @@
     <p>You can view the data in this site, and add feed sources.</p>
     <p id="logout-button"><a href="{{ url_for('.logout') }}" class="btn btn-primary">Logout</a></p>
   </div>
-  <div class="data">
+  <div class="data well well-large">
     <div class="tabbable tabs-left">
       <ul class="nav nav-tabs">
         <li class="active"><a href="#tab1" data-toggle="tab">statistics</a></li>
@@ -40,12 +41,9 @@
           </table>
         </div><!-- end tab1 -->
         <div class="tab-pane" id="tab2">
-          <div class="progress progress-success progress-striped active" style="margin-top:20px">
-            <div class="bar" style="width: 40%"></div>
-          </div>
         </div><!-- end tab2 -->
       </div><!-- end tab-content -->
     </div><!-- end tabbable -->
-  </div>
-</div>
+  </div><!-- end data -->
+</div><!-- end container -->
 {% endblock %}
