@@ -47,6 +47,18 @@ class User(db.Model):
             db.session.add(new_sub)
             db.session.commit()
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
 
 class UserSubscribe(db.Model):
 
@@ -84,7 +96,23 @@ class AdminUser(db.Model):
     def __repr__(self):
         return "<Admin %s>" % self.username
 
+    def __unicode__(self):
+        return self.username
+
     def check_password(self, password):
         if self.password is None:
             return False
         return check_password_hash(self.password, password)
+
+    # Flask-Login integration
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
