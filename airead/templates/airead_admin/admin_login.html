@@ -52,18 +52,26 @@
       <form method="POST" action="" class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
         {{ form.hidden_tag() }}
-        {% for f in form if f.type != 'CSRFTokenField' %}
         <div>
-          {{ f(class_="input-block-level") }}
-          {% if f.errors %}
+          {{ form.username(class_="input-block-level", placeholder="Username") }}
+          {% if form.username.errors %}
           <ul>
-              {% for e in f.errors %}
+              {% for e in form.username.errors %}
               <li><span class="label label-warning">{{ e }}</span></li>
               {% endfor %}
           </ul>
           {% endif %}
         </div>
-        {% endfor %}
+        <div>
+          {{ form.password(class_="input-block-level", placeholder="Password") }}
+          {% if form.password.errors %}
+          <ul>
+              {% for e in form.password.errors %}
+              <li><span class="label label-warning">{{ e }}</span></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
         <button class="btn btn-large btn-primary" type="submit">Sign in</button>
       </form>
     </div> <!-- /container -->
