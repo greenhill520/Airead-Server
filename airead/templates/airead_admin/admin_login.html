@@ -41,13 +41,13 @@
     <div class="container">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
-      <div class="alert alert-error">
       {% for message in messages %}
-        <a class="close" data-dismiss="alert">x</a>
-        {{ message }}
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>{{ message }}</h4>
+      </div>
       {% endfor %}
       {% endif %}
-      </div>
       {% endwith %}
       <form method="POST" action="" class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
@@ -58,7 +58,7 @@
           {% if f.errors %}
           <ul>
               {% for e in f.errors %}
-              <li>{{ e }}</li>
+              <li><span class="label label-warning">{{ e }}</span></li>
               {% endfor %}
           </ul>
           {% endif %}
