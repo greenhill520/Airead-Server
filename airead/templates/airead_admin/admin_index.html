@@ -1,5 +1,51 @@
 {% extends 'admin/master.html' %}
 {% block body %}
-<h1>Welclome to AiRead Data Viewer</h1>
-<p><a href="{{ url_for('.logout') }}">Logout</a></p>
+<style type="text/css">
+  body {
+    margin-top: 10px;
+  }
+  #logout-button {
+    margin-top: 20px;
+  }
+  .data {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+</style>
+<div class="container">
+  <div class="hero-unit">
+    <h2>Welclome to AiRead Data Viewer</h2>
+    <p>You can view the data in this site, and add feed sources.</p>
+    <p id="logout-button"><a href="{{ url_for('.logout') }}" class="btn btn-primary">Logout</a></p>
+  </div>
+  <div class="data">
+    <div class="tabbable tabs-left">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">statistics</a></li>
+        <li><a href="#tab2" data-toggle="tab">Nothing</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <table class="table table-bordered table-hover">
+            <tr>
+              <th>The number of users</th>
+              <th>The number of feed sites</th>
+              <th>The number of articles</th>
+            </tr>
+            <tr class="info">
+              <td>{{ user_num }}</td>
+              <td>{{ feed_site_num }}</td>
+              <td>{{ article_num }}</td>
+            </tr>
+          </table>
+        </div><!-- end tab1 -->
+        <div class="tab-pane" id="tab2">
+          <div class="progress progress-success progress-striped active" style="margin-top:20px">
+            <div class="bar" style="width: 40%"></div>
+          </div>
+        </div><!-- end tab2 -->
+      </div><!-- end tab-content -->
+    </div><!-- end tabbable -->
+  </div>
+</div>
 {% endblock %}

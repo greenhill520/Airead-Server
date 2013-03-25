@@ -75,7 +75,8 @@ class LoginForm(wtf.Form):
     password = wtf.PasswordField(validators=[wtf.required()])
 
     def get_user(self):
-        user = db.session.query(AdminUser).filter_by(username=self.username.data).first()
+        user = db.session.query(AdminUser).filter_by(
+                username=self.username.data.strip()).first()
         return user
 
 def init_login(app):
@@ -91,7 +92,12 @@ class RequireLoginView(admin.AdminIndexView):
     @admin.expose("/")
     def index(self):
         if login.current_user.is_authenticated():
-            return self.render("airead_admin/admin_index.html");
+            feed_site_num = db.session.query(FeedSite).count()
+            user_num = db.session.query(User).count()
+            article_num = db.session.query(FeedArticle).count()
+            return self.render("airead_admin/admin_index.html",
+                    feed_site_num=feed_site_num, user_num=user_num,
+                    article_num=article_num);
         else:
             return redirect(url_for('.login'))
     @admin.expose("/login/", methods=("GET", "POST"))
