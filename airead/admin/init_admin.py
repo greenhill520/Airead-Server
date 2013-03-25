@@ -1,10 +1,11 @@
 from airead.app import db
 from airead.models import User, UserSubscribe, AdminUser, \
         FeedArticle, FeedSite
+from airead.feeds import CannotGetFeedSite
 from flask.ext import admin, wtf, login
 from flask.ext.admin.contrib import sqlamodel
 from flask import flash, redirect, url_for, request, render_template
-from flask.ext.admin.babel import gettext
+from flask.ext.admin.babel import gettext  as _
 
 class MyModelView(sqlamodel.ModelView):
     column_display_pk=True
@@ -41,11 +42,18 @@ class FeedSiteModelView(MyModelView):
         #super(FeedSiteModelView, self).create_model(form)
         url = form.data['url']
         if FeedSite.query.filter_by(url=url).count() > 0:
-            flash(gettext('site %s was existed' % url), 'error')
+            flash(_('site %s was existed' % url), 'error')
             return False
-        feed_site = FeedSite(url=url)
-        db.session.add(feed_site)
-        db.session.commit()
+        try:
+            feed_site = FeedSite(url=url)
+            db.session.add(feed_site)
+            db.session.commit()
+        except CannotGetFeedSite, e:
+            flash(_(e.msg), 'error')
+            return False
+        except:
+            flash(_('Unknown Error'), 'error')
+            return False
         return True
 
 
@@ -92,10 +100,10 @@ class RequireLoginView(admin.AdminIndexView):
         if form.validate_on_submit():
             user = form.get_user()
             if user is None:
-                flash('Invalid user')
+                flash(_('Invalid user'))
                 return render_template('airead_admin/admin_login.html', form=form)
             if not user.check_password(form.password.data):
-                flash('Invalid password')
+                flash(_('Invalid password'))
                 return render_template('airead_admin/admin_login.html', form=form)
             login.login_user(user, remember=True)
             return redirect(url_for('.index'))
