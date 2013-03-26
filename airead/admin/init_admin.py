@@ -6,6 +6,7 @@ from flask.ext import admin, wtf, login
 from flask.ext.admin.contrib import sqlamodel
 from flask import flash, redirect, url_for, request, render_template
 from flask.ext.admin.babel import gettext  as _
+from sqlalchemy.sql.expression import desc
 
 class MyModelView(sqlamodel.ModelView):
     column_display_pk=True
@@ -96,9 +97,12 @@ class RequireLoginView(admin.AdminIndexView):
             feed_site_num = db.session.query(FeedSite).count()
             user_num = db.session.query(User).count()
             article_num = db.session.query(FeedArticle).count()
+            sites = db.session.query(FeedSite).order_by(desc(FeedSite.subscribed_num)).all()
+            if len(sites) > 10: # top 10 popular sites
+                sites = sites[:10]
             return self.render("airead_admin/admin_index.html",
                     feed_site_num=feed_site_num, user_num=user_num,
-                    article_num=article_num);
+                    article_num=article_num, sites=sites);
         else:
             print "redirect to login"
             return redirect(url_for('.login'))
