@@ -36,7 +36,8 @@ class FeedSiteModelView(MyModelView):
     can_create = True
     can_edit = True
     can_delete = True
-    form_excluded_columns = ('title', 'updated', 'articles')
+    form_excluded_columns = ('title', 'updated', 'articles', 'subscribed_num')
+    #column_display_all_relations = True
 
     def create_model(self, form):
         #super(FeedSiteModelView, self).create_model(form)
@@ -99,6 +100,7 @@ class RequireLoginView(admin.AdminIndexView):
                     feed_site_num=feed_site_num, user_num=user_num,
                     article_num=article_num);
         else:
+            print "redirect to login"
             return redirect(url_for('.login'))
     @admin.expose("/login/", methods=("GET", "POST"))
     def login(self):
@@ -113,7 +115,6 @@ class RequireLoginView(admin.AdminIndexView):
                 return render_template('airead_admin/admin_login.html', form=form)
             login.login_user(user, remember=True)
             return redirect(url_for('.index'))
-
         return render_template('airead_admin/admin_login.html', form=form)
 
     @admin.expose("/logout/")

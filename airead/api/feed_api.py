@@ -48,9 +48,10 @@ def subscribe(user_id):
         feed_site = FeedSite(feed_link)
         db.session.add(feed_site)
         db.commit()
-    user_subscribe = UserSubscribe(user_id=user.id, site_id=feed_site.id)
-    db.session.add(user_subscribe)
-    db.session.commit()
+    #user_subscribe = UserSubscribe(user_id=user.id, site_id=feed_site.id)
+    #db.session.add(user_subscribe)
+    #db.session.commit()
+    UserSubscribe.subscribe(user.id, feed_site.id)
     return api_response(success=True, data={'site_id': feed_site.id,
         'site_url': feed_site.url})
 
@@ -72,10 +73,11 @@ def unsubscribe(user_id):
     if info is None:
         return api_response(success=False, data=None,
                 error_code=no_post_data[0], error_message=no_post_data[1])
-    user_subscribe = UserSubscribe.query.filter_by(user_id=user.id, site_id=info['site_id']).first()
-    if user_subscribe is not None:
-        db.session.delete(user_subscribe)
-        db.session.commit()
+    #user_subscribe = UserSubscribe.query.filter_by(user_id=user.id, site_id=info['site_id']).first()
+    #if user_subscribe is not None:
+    #    db.session.delete(user_subscribe)
+    #    db.session.commit()
+    UserSubscribe.unsubscribe(user.id, info['site_id'])
     return api_response(success=True)
 
 @basic_auth

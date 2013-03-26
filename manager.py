@@ -29,5 +29,24 @@ def make_shell():
             AdminUser=AdminUser,
             use_bpython=True)
 
+@manager.command
+def runserver():
+    app.run(port=8080)
+
+@manager.command
+def create_test_data():
+    test_user = User("text", "text@text.com", "123123")
+    site = FeedSite("http://mindhacks.cn/")
+    db.session.add(test_user)
+    db.session.add(site)
+    db.session.commit()
+    UserSubscribe.subscribe(test_user.id, site.id)
+
+@manager.command
+def create_all_data():
+    createdb()
+    createadmin()
+    create_test_data()
+
 if __name__ == '__main__':
     manager.run()

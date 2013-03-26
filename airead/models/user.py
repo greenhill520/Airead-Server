@@ -1,5 +1,6 @@
 from airead.database import db
 from werkzeug import generate_password_hash, check_password_hash
+from feed import FeedSite
 import md5
 
 class User(db.Model):
@@ -80,6 +81,28 @@ class UserSubscribe(db.Model):
     
     def __unicode__(self):
         return "<%s>" % (self.site.title)
+
+    @classmethod
+    def subscribe(cls, user_id, feedsite_id):
+        user_subscribe = UserSubscribe(user_id=user_id, site_id=feedsite_id)
+        db.session.add(user_subscribe)
+        db.session.commit()
+        feedsite = FeedSite.query.get(feedsite_id)
+        feedsite.subscribed_num = feedsite.subscribed_num + 1
+        db.session.add(feedsite)
+        db.session.commit()
+
+    @classmethod
+    def unsubscribe(cls, user_id, feedsite_id):
+        user_subscribe = UserSubscribe.query.filter_by(user_id=user_id,
+                site_id=feedsite_id).first()
+        if user_subscribe is not None:
+            db.session.delete(user_subscribe)
+            db.session.commit()
+            feedsite = FeedSite.query.get(feedsite_id)
+            feedsite.subscribed_num = feedsite.subscribed_num - 1
+            db.session.add(feedsite)
+            db.session.commit()
 
 class AdminUser(db.Model):
 
