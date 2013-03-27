@@ -1,5 +1,6 @@
 from airead.database import db
 from airead.feeds import FeedData
+from flask import current_app as app
 
 import datetime
 
@@ -23,6 +24,7 @@ class FeedSite(db.Model):
         feed_data.init_data()
         self.title =  feed_data.site_title
         self.updated = feed_data.site_updated
+        app.logger.info("create feed site %s" % self.title)
 
     def __repr__(self):
         return "<FeedSite %s>" % self.title
@@ -47,6 +49,7 @@ class FeedArticle(db.Model):
 
     def __init__(self, *args, **kwargs):
         super(FeedArticle, self).__init__(*args, **kwargs)
+        app.logger.info("add feed articles %s" % self.title)
 
     def __repr__(self):
         return "<FeedArticle %s>" % self.title.encode('utf8')

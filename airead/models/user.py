@@ -1,6 +1,8 @@
 from airead.database import db
 from werkzeug import generate_password_hash, check_password_hash
 from feed import FeedSite
+from flask import current_app as app
+
 import md5
 
 class User(db.Model):
@@ -15,6 +17,7 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password = self._gen_password(password) 
+        app.logger.info("add a new user %s" % self.username)
 
     def __repr__(self):
         return "<User %s>" % self.username
