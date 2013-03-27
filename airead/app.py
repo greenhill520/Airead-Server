@@ -3,6 +3,7 @@ from airead.database import db
 from airead.models import User, AdminUser
 from airead.logger import init_logger
 from airead.admin import init_admin
+from airead.api import init_api
 
 def init_app():
     app = Flask(__name__)
@@ -13,6 +14,7 @@ def init_app():
     
     init_logger(app)
     init_admin(app)
+    init_api(app)
     return app
 
 def create_adminuser(app):

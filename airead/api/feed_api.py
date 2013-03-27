@@ -55,8 +55,8 @@ def subscribe(user_id):
     return api_response(success=True, data={'site_id': feed_site.id,
         'site_url': feed_site.url})
 
-@basic_auth
 @app.route("/unsubscribe/<int:user_id>/", methods=('POST', ))
+@basic_auth
 def unsubscribe(user_id):
     """
     unsubscribe a feed
@@ -80,8 +80,8 @@ def unsubscribe(user_id):
     UserSubscribe.unsubscribe(user.id, info['site_id'])
     return api_response(success=True)
 
-@basic_auth
 @app.route("/get_feed_articles/<int:user_id>/", methods=('GET', ))
+@basic_auth
 def get_feed_articles(user_id):
     """
     get user subscribe articles
@@ -98,7 +98,7 @@ def get_feed_articles(user_id):
     if user is None:
         return api_response(success=None, error_code=user_not_exist[0],
                 error_message=user_not_exist[1])
-    subscribes = UserSubscribe.filter_by(user=user).all()
+    subscribes = UserSubscribe.query.filter_by(user=user).all()
     user_subscribe = [item.site.id for item in subscribes]
     articles = FeedArticle.query.filter(
             FeedArticle.site_id.in_(user_subscribe)).order_by(desc(FeedArticle.updated)).all()
@@ -114,8 +114,8 @@ def get_feed_articles(user_id):
         data.append(_dict)
     return api_response(success=True, data=data)
 
-@basic_auth
 @app.route("/get_feed_articles/<int:user_id>/<int:page>/", methods=('GET', ))
+@basic_auth
 def get_feed_articles_page(user_id, page):
     """
     get user subscribe articles, paginate version(page start from 1)
@@ -135,7 +135,7 @@ def get_feed_articles_page(user_id, page):
     if user is None:
         return api_response(success=False, error_code=user_not_exist[0],
                 error_message=user_not_exist[1])
-    subscribes = UserSubscribe.filter_by(user=user).all()
+    subscribes = UserSubscribe.query.filter_by(user=user).all()
     user_subscribe = [item.site.id for item in subscribes]
     try:
         articles = FeedArticle.query.filter(
