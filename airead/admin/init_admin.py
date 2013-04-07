@@ -1,7 +1,7 @@
 from airead.app import db
 from airead.models import User, UserSubscribe, AdminUser, \
         FeedArticle, FeedSite
-from airead.feeds import CannotGetFeedSite
+from airead.feeds import CannotGetFeedSite, get_feed_link
 from flask.ext import admin, wtf, login
 from flask.ext.admin.contrib import sqlamodel
 from flask import flash, redirect, url_for, request, render_template
@@ -31,6 +31,7 @@ class FeedArticleModelView(MyModelView):
 
 class UserSubscribeModelView(MyModelView):
     column_filters = ('user', 'site')
+    can_delete = True
 
 class FeedSiteModelView(MyModelView):
     column_searchable_list = ('url',  'title', )
@@ -47,7 +48,10 @@ class FeedSiteModelView(MyModelView):
             flash(_('site %s was existed' % url), 'error')
             return False
         try:
-            feed_site = FeedSite(url=url)
+            feed_link = get_feed_link(url)
+            if feed_link is None:
+                raise CannotGetFeedSite(url)
+            feed_site = FeedSite(url=feed_link)
             db.session.add(feed_site)
             db.session.commit()
         except CannotGetFeedSite, e:

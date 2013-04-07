@@ -18,7 +18,7 @@ get all feeds site(user in app search)
 
 app = Blueprint("feed", __name__)
 
-@app.route("/subscribe/<int:user_id>/", methods=('POST', 'get'))
+@app.route("/subscribe/<int:user_id>/", methods=('POST', ))
 @basic_auth
 def subscribe(user_id):
     """
@@ -42,12 +42,12 @@ def subscribe(user_id):
         return api_response(success=False, data=None,
                 error_code=cant_find_feed[0], error_message=cant_find_feed[1])
     feed_site = None
-    if FeedSite.query.filter_by(url=feed_site).count() > 0:
-        feed_site = FeedSite.query.filter_by(url=feed_site).first()
+    if FeedSite.query.filter_by(url=feed_link).count() > 0:
+        feed_site = FeedSite.query.filter_by(url=feed_link).first()
     else:
         feed_site = FeedSite(feed_link)
         db.session.add(feed_site)
-        db.commit()
+        db.session.commit()
     #user_subscribe = UserSubscribe(user_id=user.id, site_id=feed_site.id)
     #db.session.add(user_subscribe)
     #db.session.commit()

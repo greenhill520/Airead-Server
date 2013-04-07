@@ -71,10 +71,12 @@ class UserSubscribe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id',
         ondelete='CASCADE'), nullable=False)
-    site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id', ondelete='CASCADE'))
+    site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id',
+        ondelete='CASCADE'), nullable=False)
     user = db.relationship("User", innerjoin=True, lazy="joined",
-            backref='usersubscribe')
-    site = db.relationship("FeedSite", innerjoin=True, lazy="joined", backref='usersubscribe')
+            backref=db.backref('usersubscribe', cascade="all,delete"))
+    site = db.relationship("FeedSite", innerjoin=True, lazy="joined",
+            backref=db.backref('usersubscribe', cascade="all,delete"))
 
     def __init__(self, *args, **kwargs):
         super(UserSubscribe, self).__init__(*args, **kwargs)
@@ -88,6 +90,9 @@ class UserSubscribe(db.Model):
 
     @classmethod
     def subscribe(cls, user_id, feedsite_id):
+        if UserSubscribe.query.filter_by(user_id=user_id,
+                site_id=feedsite_id).count() > 0: # already subscribed
+            return
         user_subscribe = UserSubscribe(user_id=user_id, site_id=feedsite_id)
         db.session.add(user_subscribe)
         db.session.commit()

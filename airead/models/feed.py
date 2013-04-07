@@ -1,6 +1,7 @@
 from airead.database import db
 from airead.feeds import FeedData
 from flask import current_app as app
+from airead.feeds import get_feed_link, CannotGetFeedSite
 
 import datetime
 
@@ -17,8 +18,11 @@ class FeedSite(db.Model):
     subscribed_num = db.Column(db.Integer, default=0, nullable=False)
 
     def __init__(self, url):
-        self.url = url
-        feed_data = FeedData(url)
+        feed_link = get_feed_link(url)
+        if feed_link is None:
+            raise CannotGetFeedSite(url)
+        self.url = feed_link
+        feed_data = FeedData(feed_link)
         feed_data.init_data()
         self.title =  feed_data.site_title
         updated = feed_data.site_updated
