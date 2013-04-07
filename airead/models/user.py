@@ -63,7 +63,7 @@ class User(db.Model):
     def get_id(self):
         return self.id
 
-
+# not a good choice
 class UserSubscribe(db.Model):
 
     __tablename__ = 'usersubscribe'
