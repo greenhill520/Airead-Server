@@ -35,11 +35,10 @@ def create_adminuser(app):
     db.session.commit()
     app.logger.info('create admin %s' % app.config['ADMIN_NAME'])
 
-#app = init_app()
+app = init_app()
 
 if __name__ == '__main__':
     import os
-    app = init_app()
     port = int(os.environ.get('PORT', 5000))
     app.run(port=port)
 
