@@ -1,7 +1,7 @@
 import os
 
 HERE = os.path.dirname(__file__)
-DEBUG = True
+DEBUG = False
 DATABASE_NAME = 'airead.db'
 ADMIN_NAME = "airead"
 ADMIN_PASSWORD = "airead"
@@ -17,3 +17,7 @@ FEED_API_PREFIX = API_PREFIX + "feed"
 if DEBUG:
     SQLALCHEMY_DATABASE_URI = "sqlite:////" + HERE + "/" + DATABASE_NAME
     SQLALCHEMY_ECHO = False
+else:
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_ECHO = False
+
