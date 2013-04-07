@@ -69,8 +69,9 @@ class UserSubscribe(db.Model):
     __tablename__ = 'usersubscribe'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id',
+        ondelete='CASCADE'), nullable=False)
+    site_id = db.Column(db.Integer, db.ForeignKey('feedsite.id', ondelete='CASCADE'))
     user = db.relationship("User", innerjoin=True, lazy="joined",
             backref='usersubscribe')
     site = db.relationship("FeedSite", innerjoin=True, lazy="joined", backref='usersubscribe')

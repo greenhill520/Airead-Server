@@ -7,10 +7,10 @@ def check_auth(username, hash_password):
     """
     the password is hash password
     """
-    users_list = User.query.filter_by(username=username)
+    users_list = User.query.filter_by(username=username).all()
     if len(users_list) == 0:
         return False
-    user = users_list.first()
+    user = users_list[0]
     if user is None:
         return False
     success = user.check_hash_password(hash_password)
@@ -36,7 +36,7 @@ def require_auth(func):
             return challenge()
         encode_auth = encode_auth.split()[-1]
         decode_auth = encode_auth.decode("base64")
-        info = decode_auth.spilt(":")
+        info = decode_auth.split(":")
         if not check_auth(info[0], info[1]):
             return challenge()
         else:

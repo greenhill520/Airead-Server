@@ -4,6 +4,7 @@ Flask-Script
 Flask-Admin
 Flask-Login
 apscheduler
+rq
 feedparser
 bpython
 simplejson

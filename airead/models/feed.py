@@ -4,7 +4,6 @@ from flask import current_app as app
 
 import datetime
 
-
 class FeedSite(db.Model):
 
     __tablename__ = 'feedsite'
@@ -12,8 +11,7 @@ class FeedSite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(120), nullable=False)
     title = db.Column(db.Unicode(120), nullable=False, unique=True)
-    updated = db.Column(db.DateTime, default=datetime.datetime.utcnow,
-            nullable=False)
+    updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     articles = db.relationship('FeedArticle', backref=db.backref('feedsite',
         lazy="joined"), lazy='dynamic')
     subscribed_num = db.Column(db.Integer, default=0, nullable=False)
@@ -23,8 +21,12 @@ class FeedSite(db.Model):
         feed_data = FeedData(url)
         feed_data.init_data()
         self.title =  feed_data.site_title
-        self.updated = feed_data.site_updated
-        app.logger.info("create feed site %s" % self.title)
+        updated = feed_data.site_updated
+        if updated is not None:
+            self.updated = updated
+        else:
+            self.updated = datetime.datetime.now()
+        #app.logger.info("create feed site %s" % self.title)
 
     def __repr__(self):
         return "<FeedSite %s>" % self.title

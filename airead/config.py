@@ -6,6 +6,7 @@ DATABASE_NAME = 'airead.db'
 ADMIN_NAME = "airead"
 ADMIN_PASSWORD = "airead"
 LOG_FILE = "airead.log"
+TIMER_LOG_FILE = "airead_timer.log"
 SECRET_KEY = "7KdQS8mTtXEBW6PDZr0N"
 NAME = "AiRead"
 ADMIN_VIEW_NAME = "AiRead Data Viewer"

@@ -4,6 +4,8 @@ from airead.models import User, UserSubscribe, FeedArticle, FeedSite, AdminUser
 from airead.database import db
 from airead import init_app, create_adminuser
 
+import os
+
 manager = Manager(init_app)
 
 @manager.command
@@ -31,7 +33,8 @@ def make_shell():
 
 @manager.command
 def runserver():
-    app.run(port=8080)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(port=port)
 
 @manager.command
 def create_test_data():

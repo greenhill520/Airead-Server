@@ -18,7 +18,7 @@ get all feeds site(user in app search)
 
 app = Blueprint("feed", __name__)
 
-@app.route("/subscribe/<int:user_id>/", methods=('POST', ))
+@app.route("/subscribe/<int:user_id>/", methods=('POST', 'get'))
 @basic_auth
 def subscribe(user_id):
     """
@@ -140,7 +140,8 @@ def get_feed_articles_page(user_id, page):
     try:
         articles = FeedArticle.query.filter(
                 FeedArticle.site_id.in_(user_subscribe)).order_by(
-                        desc(FeedArticle.updated)).paginate(page=page).all()
+                        desc(FeedArticle.updated)).paginate(page=page).items
+        print len(articles) 
         data = []
         for item in articles:
             _dict = {}
@@ -171,6 +172,30 @@ def get_all_feed_site():
     feed_site = FeedSite.query.all()
     data = []
     for site in feed_site:
+        _dict = {}
+        _dict['site_id'] = site.id
+        _dict['site_url'] = site.url
+        _dict['site_title'] = site.title
+        data.append(_dict)
+    return api_response(success=True, data=data)
+
+@app.route("/get_hot_feed_site/", methods=('GET', ))
+def get_hot_feed_site():
+    """
+    get the most 10 popular sites
+    response json format:
+        [
+            {
+                'site_id': site_id, 'site_title': site_title,
+                'site_url': site_url
+            },...
+        ]
+    """
+    sites = FeedSite.query.order_by(desc(FeedSite.subscribed_num)).all()
+    if len(sites) > 10:
+        sites = sites[:10]
+    data = []
+    for site in sites:
         _dict = {}
         _dict['site_id'] = site.id
         _dict['site_url'] = site.url
