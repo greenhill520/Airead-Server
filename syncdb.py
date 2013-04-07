@@ -5,7 +5,8 @@ from flask import current_app as app
 
 if __name__ == '__main__':
     db.create_all()
-    create_adminuser()
+    create_adminuser(app)
+    # test data
     test_user = User("test", "test@test.com", "123123")
     site = FeedSite("http://mindhacks.cn/")
     db.session.add(test_user)
