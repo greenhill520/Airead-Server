@@ -4,6 +4,7 @@ from util import api_response, get_request_json
 from airead.app import db
 from code_and_msg import *
 from airead.models import User
+from sqlalchemy import or_
 
 app = Blueprint("user", __name__)
 """
@@ -27,8 +28,10 @@ def register():
                 error_code=no_post_data[0], error_messag=no_post_data[1])
     username = info['username']  
     password = info['password']
-    email = info['password']
-    if User.query.filter_by(username=username).count() > 0:
+    email = info['email']
+    print username, password, email
+    if User.query.filter(or_(User.username == username, 
+            User.email == email)).count() > 0:
         return api_response(success=False, data=None,
                 error_code=user_exist[0], error_message=user_exist[1])
     user = User(username=username, email=email, password=password)
