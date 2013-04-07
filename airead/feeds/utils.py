@@ -45,7 +45,7 @@ def check_if_feed_link(url):
     response = urlopen(request)
     res_info = response.info()
     content_type = res_info.getheaders('content-type')
-    if 'xml' in content_type or 'feed' in url or 'rss' in url:
+    if 'xml' in content_type or 'feed' in url or 'rss' in url or 'atom' in url:
         return True
     return False
 
