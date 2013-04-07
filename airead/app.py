@@ -13,9 +13,9 @@ def init_app():
     db.app = app
     app.debug = app.config['DEBUG']
     
-    init_logger(app)
-    init_admin(app)
-    init_api(app)
+    #init_logger(app)
+    #init_admin(app)
+    #init_api(app)
     return app
 
 def init_schedule_app():
