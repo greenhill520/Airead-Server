@@ -1,7 +1,7 @@
 from airead.models import User, UserSubscribe, FeedArticle, FeedSite, AdminUser
+from flask import current_app as app
 from airead.database import db
 from airead import create_adminuser
-from flask import current_app as app
 
 if __name__ == '__main__':
     db.create_all()
