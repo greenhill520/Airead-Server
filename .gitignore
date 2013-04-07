@@ -1,7 +1,7 @@
 *.pyc
 venv/
 test/
-airead.sqlite
 airead.log
+airead.db
 *.swp
 *.swo
