@@ -25,7 +25,6 @@ def clock_task():
 #    print FeedSite.query.count()
 
 
-if __name__ == '__main__':
-    sched.start()
-    while True:
-        pass
+sched.start()
+while True:
+    pass
