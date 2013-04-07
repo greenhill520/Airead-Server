@@ -31,10 +31,10 @@ def make_shell():
             AdminUser=AdminUser,
             use_bpython=True)
 
-@manager.command
-def runserver():
-    port = int(os.environ.get('PORT', 5000))
-    app.run(port=port)
+#@manager.command
+#def runserver():
+#    port = int(os.environ.get('PORT', 5000))
+#    app.run(port=port)
 
 @manager.command
 def create_test_data():
