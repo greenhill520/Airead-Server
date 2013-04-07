@@ -8,14 +8,14 @@ from airead.api import init_api
 
 def init_app():
     app = Flask(__name__)
-    #app.config.from_pyfile('config.py')
-    #db.init_app(app)
-    #db.app = app
-    #app.debug = app.config['DEBUG']
+    app.config.from_pyfile('config.py')
+    db.init_app(app)
+    db.app = app
+    app.debug = app.config['DEBUG']
     
-    #init_logger(app)
-    #init_admin(app)
-    #init_api(app)
+    init_logger(app)
+    init_admin(app)
+    init_api(app)
     return app
 
 def init_schedule_app():
@@ -40,5 +40,5 @@ app = init_app()
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 5000))
-    app.run(port=port)
+    app.run(host="0.0.0.0", port=port)
 
