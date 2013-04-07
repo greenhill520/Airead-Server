@@ -14,7 +14,7 @@ class FeedSite(db.Model):
     title = db.Column(db.Unicode(120), nullable=False, unique=True)
     updated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     articles = db.relationship('FeedArticle', backref=db.backref('feedsite',
-        lazy="joined"), lazy='dynamic')
+        lazy="joined"), lazy='dynamic', cascade="all,delete")
     subscribed_num = db.Column(db.Integer, default=0, nullable=False)
 
     def __init__(self, url):
