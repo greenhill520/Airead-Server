@@ -7,6 +7,7 @@ import datetime
 app = init_schedule_app()
 
 def update_feed(site_id):
+    print 'now update for id %s' % site_id 
     with app.app_context():
         site = FeedSite.query.get(site_id)
         if site is None:
