@@ -2,7 +2,7 @@ import os
 import json
 
 HERE = os.path.dirname(__file__)
-DEBUG = True
+DEBUG = False
 DATABASE_NAME = 'airead.db'
 ADMIN_NAME = "airead"
 ADMIN_PASSWORD = "airead"
