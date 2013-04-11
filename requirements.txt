@@ -10,7 +10,7 @@ bpython
 simplejson
 
 # for heroku
-#psycopg2
+psycopg2
 
 # for appfog
 #MySQL-python
