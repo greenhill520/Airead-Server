@@ -1,4 +1,3 @@
-
 Airead-Server
 =============
 
@@ -8,13 +7,19 @@ Airead, Your final RSS reader.
 
 #Dependences:
 
-[Flask][1]: an awesome web framework
-[Flask-SQLAlchemy][2]: adds SQLAlchemy support to Flask. Quick and easy.
-[Flask-Script][3]: provides support for writing external scripts in Flask
-[Flask-Admin][4]: provides an admin interface
-[Flask-Login][5]: provides user session management for Flask
-[APScheduler][6], [rq][7]: message queuing and task schedule utilities
-[feedparser][8]: and universal feed parser
+- [Flask][1]: an awesome web framework
+
+- [Flask-SQLAlchemy][2]: adds SQLAlchemy support to Flask. Quick and easy.
+
+- [Flask-Script][3]: provides support for writing external scripts in Flask
+
+- [Flask-Admin][4]: provides an admin interface
+
+- [Flask-Login][5]: provides user session management for Flask
+ 
+- [APScheduler][6], [Python-RQ][7]: message queuing and task schedule utilities
+
+- [feedparser][8]: and universal feed parser
 
 #Getting Start
 
