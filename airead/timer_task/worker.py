@@ -9,7 +9,7 @@ app = init_app()
 
 QUEUE_NAME = 'airead_queue'
 
-redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+redis_url = app.config['REDIS_URL']
 conn = redis.from_url(redis_url)
 
 queue = Queue(QUEUE_NAME, connection=conn)

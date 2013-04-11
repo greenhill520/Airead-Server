@@ -8,7 +8,6 @@ app = init_schedule_app()
 
 def update_feed(site_id):
     with app.app_context():
-        app.logger.info('now update site for id %d' % site_id)
         site = FeedSite.query.get(site_id)
         if site is None:
             return
@@ -43,4 +42,5 @@ if __name__ == '__main__':
     # simple test
     sites = FeedSite.query.all()
     for s in sites:
+        app.logger.info("now update site %s" % s)
         update_feed(s.id)
